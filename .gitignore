@@ -1,5 +1,7 @@
 *.iml
-.*
+.idea/
+.settings/
+.cache/
 logs
 project/project
 project/target
