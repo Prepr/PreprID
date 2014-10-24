@@ -1,0 +1,2 @@
+GET        /vassets/*file        controllers.Assets.versioned(path="/public/web", file: Asset)
+GET        /assets/*file         controllers.Assets.at(path="/public/web", file)

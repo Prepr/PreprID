@@ -1,0 +1,9 @@
+1000:so.paws.db.sorm.SormDbPlugin
+1500:com.typesafe.plugin.CommonsMailerPlugin
+9994:plugins.users.sorm.SormAuthenticatorStorePlugin
+9995:securesocial.core.DefaultIdGenerator
+9996:securesocial.core.providers.utils.DefaultPasswordValidator
+9997:plugins.users.CustomTemplatesPlugin
+9998:plugins.users.sorm.SormUserServicePlugin
+9999:securesocial.core.providers.utils.BCryptPasswordHasher
+10004:securesocial.core.providers.UsernamePasswordProvider

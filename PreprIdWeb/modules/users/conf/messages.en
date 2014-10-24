@@ -1,0 +1,56 @@
+email=Email
+firstName=First Name
+firstName.placeholder=John
+lastName=Last Name
+lastName.placeholder=Smith
+logout=Sign Out
+newPassword.password1=New Password
+newPassword.password2=Repeat New Password
+password=Password
+password.password1=Password
+password.password2=Repeat Password
+username=Username
+userName=Username
+
+404=404 Not Found
+500=500 Internal Server Error
+
+site.title=Project Title
+
+index.title=Welcome
+index.subtitle=Change this page.
+
+signUpStart.subtitle=Enter your email address. Wait for the link to arrive in your inbox, then follow it to complete signing up.
+signUpStart.submit=Send Email
+
+signUp.title=Sign Up
+signUp.subtitle=All fields are required.
+signUp.submit=Sign Up
+signUp.generate=Generate
+signUp.generateDescription=Would you rather generate a fake name?
+
+login.title=Sign In
+login.subtitle=This is where you sign in to your account.
+login.submit=Sign In
+login.forgotPassword=Did you forget your password?
+login.signUp=Sign up for a new account.
+login.staySignedIn=Stay signed in?
+
+passwordResetStart.subtitle=Enter your email address, and click the button below. An email will be sent containing password reset instructions
+
+passwordReset.title=Reset Password
+passwordReset.subtitle=Please enter a new password.
+passwordReset.submit=Reset Password
+
+passwordChange.title=Change Password
+passwordChange.subtitle=Please enter a new password.
+passwordChange.submit=Change Password
+
+user.editProfile=Edit Profile
+
+userProfile.title=User Profile
+
+userHome.title=User Home
+userHome.welcome=Welcome, {0}
+
+navbar.account={0}''s Account

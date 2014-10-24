@@ -1,0 +1,41 @@
+body {
+    padding-top: 10px;
+}
+
+.page-header {
+    text-align: center;
+}
+
+.page-header span {
+    display: inline-block;
+    text-align: left;
+    max-width: 500px;
+}
+
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+.jumbotron-alert {
+    width: 500px;
+    margin: 0 auto 10px auto;
+    padding: 0;
+}
+
+.form-alert {
+    margin: 0 0 15px 0;
+    padding: 5px;
+    text-align: center;
+}
+
+.form-container {
+    padding: 10px 15px 0 15px;
+    width: 350px;
+    margin: 0 auto;
+}
+.form-container a {
+    margin-left: 0;
+}
