@@ -1,0 +1,14 @@
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">PAWS</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <div ng-repeat="menu in data.menus">
+                <ul class="nav navbar-nav navbar-{{menu.position}}" ng-repeat="item in menu.items">
+                    <li><a href="{{item.route}}">{{item.display}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
