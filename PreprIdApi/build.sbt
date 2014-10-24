@@ -1,4 +1,4 @@
-name := """spray-rest-memcached"""
+name := """PreprIdApi"""
 
 version := "1.0"
 
