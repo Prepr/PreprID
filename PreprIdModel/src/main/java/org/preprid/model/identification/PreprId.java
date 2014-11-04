@@ -9,7 +9,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * Created by abouelna on 02/11/2014.
+ * The PreprId is a URI that can also serve as a URL,
+ * it has the format:
+ * http://[api-end-point]/[last-name]/[first-name]#[disambiguation]
  */
 @ToString
 @EqualsAndHashCode
