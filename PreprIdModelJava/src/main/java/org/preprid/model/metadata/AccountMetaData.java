@@ -1,4 +1,4 @@
-package org.preprid.model.information;
+package org.preprid.model.metadata;
 
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -7,7 +7,7 @@ import org.preprid.model.identification.Identifiable;
 import java.time.Instant;
 
 /**
- * Created by abouelna on 02/11/2014.
+ * Information pertaining to the account, not the account holder.
  */
 @ToString
 @EqualsAndHashCode
@@ -15,6 +15,6 @@ import java.time.Instant;
 @Setter
 @Accessors(chain = true, fluent = true)
 @RequiredArgsConstructor
-public abstract class VersionedInformation extends Identifiable {
-    @NonNull protected final Instant utcTimeOfLastUpdate;
+public class AccountMetaData extends Identifiable {
+    @NonNull private final Instant utcTimeOfCreation;
 }

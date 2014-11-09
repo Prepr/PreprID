@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
- * Created by abouelna on 02/11/2014.
+ * Base class for all classes in the PreprId model package, except the PreprId class.
  */
 @ToString
 @EqualsAndHashCode

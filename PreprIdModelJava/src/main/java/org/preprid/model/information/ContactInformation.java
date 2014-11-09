@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
- * Created by abouelna on 02/11/2014.
+ * Bits and pieces of information to be pulled into different entities as needed.
  */
 @ToString
 @EqualsAndHashCode
@@ -13,6 +13,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true, fluent = true)
 @RequiredArgsConstructor
 public class ContactInformation extends VersionedInformation {
+
     @NonNull private final String primaryEmail;
+
+    private String address;
+
+    private String dayTelephoneNumber;
 
 }

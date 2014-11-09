@@ -18,27 +18,44 @@ import java.net.URL;
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PreprId {
 
-    public static final String HTTP_PROTOCOL = "http://";
+    public static final String HTTP_PROTOCOL() { return "http://"; }
+
+    @SneakyThrows(MalformedURLException.class)
+    public static final URL DEFAULT_PREPRID_ENDPOINT() { return new URL("http://api.preprid.org/"); }
 
     public static PreprId fromURI(final URI uri) {
 
         final URL creationAPIEndPoint;
         try {
-            creationAPIEndPoint = new URL(HTTP_PROTOCOL + uri.getAuthority());
+            creationAPIEndPoint = new URL(HTTP_PROTOCOL() + uri.getAuthority());
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad URI authority: " + uri.getAuthority(), e);
         }
 
-        final String[] names = uri.getPath().split("/");
-
-        if (names.length != 3) { // empty string, last name, first name
-            throw new IllegalArgumentException("Expected URI path to be 'lastname/firstname' but found: " + uri.getPath());
-        }
+        final String path = uri.getPath();
 
         final String disambiguation = uri.getFragment();
+
+        return fromURIComponents(creationAPIEndPoint, path, disambiguation);
+    }
+
+    public static final PreprId fromIdComponents(@NonNull final String lastNameFirstName,
+                                                 @NonNull final String disambiguation) {
+        return fromURIComponents(DEFAULT_PREPRID_ENDPOINT(), lastNameFirstName, disambiguation);
+    }
+
+    static final PreprId fromURIComponents(@NonNull final URL creationAPIEndPoint,
+                                           @NonNull final String lastNameFirstName,
+                                           @NonNull final String disambiguation) {
+
+        final String[] names = lastNameFirstName.split("/");
+
+        if (names.length != 3) { // empty string, last name, first name
+            throw new IllegalArgumentException("Expected URI path to be 'lastname/firstname' but found: " + lastNameFirstName);
+        }
 
         final PreprId retval = new PreprId(creationAPIEndPoint, names[1], names[2], disambiguation);
 
@@ -55,6 +72,7 @@ public class PreprId {
 
     public URL asURL() {
         final StringBuilder spec = new StringBuilder('/').append(lastName())
+                                                         .append('/')
                                                          .append(firstName());
 
         if (!disambiguation.isEmpty()) {

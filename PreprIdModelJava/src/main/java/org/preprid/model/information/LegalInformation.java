@@ -5,10 +5,11 @@ import lombok.experimental.Accessors;
 import org.preprid.model.information.VersionedInformation;
 
 import java.net.URI;
+import java.net.URL;
 import java.time.Instant;
 
 /**
- * Created by abouelna on 02/11/2014.
+ * Bits and pieces of information to be pulled into different entities as needed.
  */
 @ToString
 @EqualsAndHashCode
@@ -19,7 +20,9 @@ import java.time.Instant;
 public class LegalInformation extends VersionedInformation {
 
     /**
-     * Created by abouelna on 02/11/2014.
+     * Records the URI identifier of the agreement, the time it was accepted,
+     * and the URL of the page through which the agreement was accepted.
+     * This information should be enough to pull out the logs of the agreement.
      */
     @ToString
     @EqualsAndHashCode
@@ -31,6 +34,8 @@ public class LegalInformation extends VersionedInformation {
         @NonNull private final URI agreementUri;
 
         @NonNull private final Instant utcTimeOfAcceptance;
+
+        @NonNull private final URL agreementAcceptancePage;
     }
 
     @NonNull private final Iterable<AgreementAcceptance> acceptedAgreements;
