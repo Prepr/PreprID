@@ -4,11 +4,8 @@ import java.net.URL
 
 import akka.actor.Actor
 import com.example.rest.RouteExceptionHandlers
-import shapeless.HNil
 import spray.http.{HttpResponse, HttpRequest}
-import spray.http.Uri.Path
 import spray.httpx.SprayJsonSupport
-import spray.routing.PathMatcher.{Unmatched, Matched}
 import spray.routing._
 
 import org.preprid.model.identification.PreprId
@@ -25,61 +22,51 @@ class PreprIdActor extends Actor with PreprIdService {
 
 trait PreprIdService extends HttpService with SprayJsonSupport with RouteExceptionHandlers  {
 
-  val preprIdRegex = """^([^(/|#)]+)/([^(/|#)]+)(#.+)?$""".r
 
-  val apiEndpoint = extract(ctx => {
-    new URL(PreprId.HTTP_PROTOCOL(),
+  val apiEndpointAndFragment = extract(ctx => {
+    (new URL(PreprId.HTTP_PROTOCOL(),
             ctx.request.uri.authority.host.address, ctx.request.uri.authority.port.toInt,
-            "") //The file component of the URL.. could be "/"
+            ""), //The file component of the URL.. could be "/"
+      ctx.request.uri.fragment)
   })
 
-  implicit def createLogEntry(text: String): Some[LogEntry] = {
-    Some(LogEntry(text, DebugLevel))
+  implicit def createLogEntry(textConstructor: () => String): Some[LogEntry] = {
+    Some(LogEntry(textConstructor(), DebugLevel))
   }
   def loggingMagnet(request: HttpRequest): Any => Option[LogEntry] = {
-    case response: HttpResponse => "Responded to request " + request.toString + " with status code " + response.status
-    case Rejected(rejections) => "Request " + request.toString + " rejected: " + rejections.toString
-    case x => "Request " + request.toString + " not handled: " + x.toString
+    case response: HttpResponse => () => "Responded to request " + request.toString + " with status code " + response.status
+    case Rejected(rejections) => () => "Request " + request.toString + " rejected: " + rejections.toString
+    case x => () => "Request " + request.toString + " not handled: " + x.toString
   }
 
   val preprIdRoute: Route = logRequestResponse(loggingMagnet _) {
-    apiEndpoint { apiEndpointUrl =>
+    apiEndpointAndFragment { nonPathUriInfo =>
 
-      object PreprIdSegments extends PathMatcher1[List[PreprId]] {
-        def apply(path: Path) = {
-          println(path toString)
-          path match {
-            case preprIdRegex(lastName, firstName, fragment) => {
-              val disambiguation = if (fragment == null) {
-                ""
-              } else {
-                fragment.substring(1)
-              }
-
-              Matched(Path.Empty, List(new PreprId(apiEndpointUrl, lastName, firstName, disambiguation)) :: HNil)
-            }
-            case _ => Unmatched
-          }
-        }
+      val apiEndpointUrl = nonPathUriInfo._1
+      val disambiguation = nonPathUriInfo._2 match {
+        case Some(fragment) => fragment
+        case None => ""
       }
 
-      path("learner" / PreprIdSegments) { preprIdList =>
+      path("learner" / Segment / Segment) { (lastName, firstName) =>
+
+        val preprId = new PreprId(apiEndpointUrl, lastName, firstName, disambiguation)
         get {
-          complete("Get the learner with id " + preprIdList mkString)
+          complete("Get the learner with id " + preprId.toString())
         } ~
           post {
             complete {
-              "Post the learner with id " + preprIdList mkString
+              "Post the learner with id " + preprId.toString()
             }
           } ~
           put {
             complete {
-              "Put the learner with id " + preprIdList mkString
+              "Put the learner with id " + preprId.toString()
             }
           } ~
           delete {
             complete {
-              "Delete the learner with id " + preprIdList mkString
+              "Delete the learner with id " + preprId.toString()
             }
           }
 
