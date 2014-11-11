@@ -5,6 +5,7 @@ import akka.io.IO
 import com.example.cache.{HazelcastProcess, MemcachedProcess}
 import com.example.database.ProfilesDatabase
 import com.example.rest.ProfileActor
+import org.preprid.api.rest.PreprIdActor
 import spray.can.Http
 
 /**
@@ -24,11 +25,11 @@ import spray.can.Http
 object Boot extends App {
 
   //HazelcastProcess 
-  MemcachedProcess
-  ProfilesDatabase
+  //MemcachedProcess
+  //ProfilesDatabase
 
   implicit val system = ActorSystem("spray-can")
-  val service = system.actorOf(Props[ProfileActor], "profile-service")
+  val service = system.actorOf(Props[PreprIdActor], "PreprId-service")
 
   IO(Http) ! Http.Bind(service, interface = "localhost", port = 8080)
 

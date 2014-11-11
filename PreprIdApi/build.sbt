@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion := "2.10.3"
 
+resolvers += Resolver.mavenLocal
+
 // Change this to another test framework if you prefer
 libraryDependencies ++= {
   val akkaV = "2.2.4"
@@ -25,7 +27,8 @@ libraryDependencies ++= {
     "net.spy"             %   "spymemcached"  % "2.11.4",
     "org.apache.logging.log4j"       %  "log4j"           % "2.0-rc2",
     "com.thimbleware.jmemcached"  % "jmemcached-core"  %  "1.0.0",
-    "com.hazelcast"       %   "hazelcast"     % "3.1.7"
+    "com.hazelcast"       %   "hazelcast"     % "3.1.7",
+    "org.prepr"           %   "preprid-model-java" % "1.0-SNAPSHOT"
   )
 }
 
