@@ -4,8 +4,11 @@ import java.net.URL
 
 import akka.actor.Actor
 import com.example.rest.RouteExceptionHandlers
+import shapeless.{HNil, ::}
+import spray.http.Uri.Path
 import spray.http.{HttpResponse, HttpRequest}
 import spray.httpx.SprayJsonSupport
+import spray.routing.PathMatcher.Matching
 import spray.routing._
 
 import org.preprid.model.identification.PreprId
@@ -23,11 +26,10 @@ class PreprIdActor extends Actor with PreprIdService {
 trait PreprIdService extends HttpService with SprayJsonSupport with RouteExceptionHandlers  {
 
 
-  val apiEndpointAndFragment = extract(ctx => {
-    (new URL(PreprId.HTTP_PROTOCOL(),
+  val apiEndpoint = extract(ctx => {
+    new URL(PreprId.HTTP_PROTOCOL(),
             ctx.request.uri.authority.host.address, ctx.request.uri.authority.port.toInt,
-            ""), //The file component of the URL.. could be "/"
-      ctx.request.uri.fragment)
+            "") //The file component of the URL.. could be "/"
   })
 
   implicit def createLogEntry(textConstructor: () => String): Some[LogEntry] = {
@@ -40,20 +42,40 @@ trait PreprIdService extends HttpService with SprayJsonSupport with RouteExcepti
   }
 
   val preprIdRoute: Route = logRequestResponse(loggingMagnet _) {
-    apiEndpointAndFragment { nonPathUriInfo =>
+    apiEndpoint { apiEndpointUrl =>
 
-      val apiEndpointUrl = nonPathUriInfo._1
-      val disambiguation = nonPathUriInfo._2 match {
-        case Some(fragment) => fragment
-        case None => ""
-      }
+      pathPrefix(Segment / Segment / Segment) { (lastName, firstName, disambiguation) =>
 
-      path("learner" / Segment / Segment) { (lastName, firstName) =>
+        val preprId = new PreprId(apiEndpointUrl, lastName, firstName,disambiguation)
 
-        val preprId = new PreprId(apiEndpointUrl, lastName, firstName, disambiguation)
-        get {
-          complete("Get the learner with id " + preprId.toString())
+        pathEndOrSingleSlash {
+          get {
+            complete {
+              "Get the resource with id " + preprId.toString()
+            }
+          } ~
+          post {
+            complete {
+              "Post the resource with id " + preprId.toString()
+            }
+          } ~
+          put {
+            complete {
+              "Put the resource with id " + preprId.toString()
+            }
+          } ~
+          delete {
+            complete {
+              "Delete the resource with id " + preprId.toString()
+            }
+          }
         } ~
+        path(RestPath) { view =>
+          get {
+            complete{
+              s"Get the $view with id " + preprId.toString()
+            }
+          } ~
           post {
             complete {
               "Post the learner with id " + preprId.toString()
@@ -69,7 +91,7 @@ trait PreprIdService extends HttpService with SprayJsonSupport with RouteExcepti
               "Delete the learner with id " + preprId.toString()
             }
           }
-
+        }
       }
     }
   }
