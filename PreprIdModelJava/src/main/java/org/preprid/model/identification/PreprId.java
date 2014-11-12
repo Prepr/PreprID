@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * The PreprId is a URI that can also serve as a URL,
  * it has the format:
- * http://[api-end-point]/[last-name]/[first-name]#[disambiguation]
+ * http://[api-end-point]/[last-name]/[first-name]/[disambiguation]/
  */
 @ToString(callSuper = true)
 @EqualsAndHashCode
@@ -37,27 +37,32 @@ public class PreprId {
 
         final String path = uri.getPath();
 
-        final String disambiguation = uri.getFragment();
-
-        return fromURIComponents(creationAPIEndPoint, path, disambiguation);
+        return fromURIComponents(creationAPIEndPoint, path);
     }
 
-    public static final PreprId fromIdComponents(@NonNull final String lastNameFirstName,
-                                                 @NonNull final String disambiguation) {
-        return fromURIComponents(DEFAULT_PREPRID_ENDPOINT(), lastNameFirstName, disambiguation);
+    /**
+     * Creates a PreprId based off the {@link org.preprid.model.identification.PreprId#DEFAULT_PREPRID_ENDPOINT()}.
+     *
+     * @param path String: /lastname/firstname/disambiguation
+     * @return PreprId created by a call to {@link org.preprid.model.identification.PreprId#fromURIComponents(java.net.URL, String)}.
+     */
+    public static final PreprId fromPath(@NonNull final String path) {
+        return fromURIComponents(DEFAULT_PREPRID_ENDPOINT(), path);
     }
 
-    static final PreprId fromURIComponents(@NonNull final URL creationAPIEndPoint,
-                                           @NonNull final String lastNameFirstName,
-                                           @NonNull final String disambiguation) {
+    public static final PreprId fromURIComponents(@NonNull final URL creationAPIEndPoint,
+                                                  @NonNull final String path) {
 
-        final String[] names = lastNameFirstName.split("/");
+        assert (path.charAt(0) == '/');
 
-        if (names.length != 3) { // empty string, last name, first name
-            throw new IllegalArgumentException("Expected URI path to be 'lastname/firstname' but found: " + lastNameFirstName);
+        final String[] names = path.split("/");
+
+        if (names.length < 4) { // empty string, last name, first name, disambiguation, (empty string)?
+            throw new IllegalArgumentException("Expected URI path to be '/lastname/firstname/disambiguation' but found: "
+                                               + path);
         }
 
-        final PreprId retval = new PreprId(creationAPIEndPoint, names[1], names[2], disambiguation);
+        final PreprId retval = new PreprId(creationAPIEndPoint, names[1], names[2], names[3]);
 
         return retval;
     }
@@ -71,16 +76,10 @@ public class PreprId {
     @NonNull private final String disambiguation;
 
     public URL asURL() {
-        final StringBuilder spec = new StringBuilder('/').append(lastName())
-                                                         .append('/')
-                                                         .append(firstName());
-
-        if (!disambiguation.isEmpty()) {
-            spec.append('#').append(disambiguation());
-        }
+        final String spec = String.format("/%s/%s/%s/", lastName(), firstName(), disambiguation());
 
         try {
-            return new URL(creationAPIEndPoint(), spec.toString());
+            return new URL(creationAPIEndPoint(), spec);
         } catch (MalformedURLException e) {
             throw new IllegalStateException("Cannot create a URL out of PreprId " + toString());
         }
