@@ -6,8 +6,8 @@ import lombok.experimental.Accessors;
 /**
  * Bits and pieces of information to be pulled into different entities as needed.
  */
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)

@@ -9,8 +9,8 @@ import java.time.Instant;
 /**
  * Information pertaining to the account, not the account holder.
  */
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)

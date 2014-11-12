@@ -13,15 +13,15 @@ import java.net.URL;
  * it has the format:
  * http://[api-end-point]/[last-name]/[first-name]#[disambiguation]
  */
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class PreprId {
 
-    public static final String HTTP_PROTOCOL() { return "http://"; }
+    public static final String HTTP_PROTOCOL() { return "http"; }
 
     @SneakyThrows(MalformedURLException.class)
     public static final URL DEFAULT_PREPRID_ENDPOINT() { return new URL("http://api.preprid.org/"); }
@@ -30,7 +30,7 @@ public class PreprId {
 
         final URL creationAPIEndPoint;
         try {
-            creationAPIEndPoint = new URL(HTTP_PROTOCOL() + uri.getAuthority());
+            creationAPIEndPoint = new URL(HTTP_PROTOCOL() + "://" + uri.getAuthority());
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad URI authority: " + uri.getAuthority(), e);
         }

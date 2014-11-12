@@ -11,8 +11,8 @@ import java.time.Instant;
 /**
  * Bits and pieces of information to be pulled into different entities as needed.
  */
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
@@ -24,7 +24,7 @@ public class LegalInformation extends VersionedInformation {
      * and the URL of the page through which the agreement was accepted.
      * This information should be enough to pull out the logs of the agreement.
      */
-    @ToString
+    @ToString(callSuper = true)
     @EqualsAndHashCode
     @Getter
     @Setter

@@ -11,8 +11,8 @@ import org.preprid.model.information.PersonalInformation;
  * and possibly extending some {@link org.preprid.model.authorization.PreprRole}s
  * and/or acting as {@link org.preprid.model.authorization.PreprResource}s.
  */
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)

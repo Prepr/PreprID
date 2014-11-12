@@ -10,12 +10,12 @@ import java.time.Instant;
  * Base class for all modifiable information, which is basically everything
  * except the lastname and firstname at the time of registeration.
  */
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
-@RequiredArgsConstructor
+@NoArgsConstructor
 public abstract class VersionedInformation extends Identifiable {
-    @NonNull protected final Instant utcTimeOfLastUpdate;
+    @NonNull protected Instant utcTimeOfLastUpdate;
 }
