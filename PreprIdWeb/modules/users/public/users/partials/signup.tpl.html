@@ -1,0 +1,46 @@
+<paws-header h1="Sign Up" subtext="All fields are required."></paws-header>
+<form ng-controller="SignUpController" ng-submit="signUp()" class="form-container" ng-init="getEmail()">
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="text" id="email" ng-model="form.email" class="form-control" disabled>
+    </div>
+    <paws-input
+            name="firstName"
+            model="form.firstName"
+            type="text"
+            errors="form.errors['firstName']"
+            label="First Name"
+            placeholder="John"
+            required="true"></paws-input>
+    <paws-input
+            name="lastName"
+            model="form.lastName"
+            type="text"
+            label="Last Name"
+            errors="form.errors['lastName']"
+            placeholder="Smith"
+            required="true"></paws-input>
+    <paws-input
+            name="password.password1"
+            model="form.password.password1"
+            type="password"
+            label="Password"
+            errors="form.errors['password.password1']"
+            placeholder="Password"
+            required="true"></paws-input>
+    <paws-input
+            name="password.password2"
+            model="form.password.password2"
+            type="password"
+            label="Repeat Password"
+            errors="form.errors['password.password2']"
+            placeholder="Repeat Password"
+            required="true"></paws-input>
+
+    <paws-submit value="Sign Up" class="primary btn-block"></paws-submit>
+
+    <div class="form-group text-center">
+        <p>Would you rather generate a fake name?</p>
+        <input type="button" ng-click="generateName()" value="Generate" class="btn btn-success" />
+    </div>
+</form>

@@ -1,0 +1,21 @@
+@()<!doctype html>
+<html lang="en">
+    <head>
+        <title>PAWS</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("web/stylesheets/stylesheet.css")"/>
+        <script>
+            @Html(org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url))
+        </script>
+        <script data-main="@routes.Assets.versioned("javascripts/app.js")"
+            src="@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))"></script>
+    </head>
+    <body>
+        <div class="container" ng-view></div>
+    </body>
+</html>
